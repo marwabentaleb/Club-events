@@ -26,10 +26,23 @@ public:
 	void setLast_name(string last_name){
 		this->last_name = last_name;
 	}
+
+	int checkExistence(string date);
+	
+	string getListDate(int pos){
+		if (pos < this->list_date.size()){
+			return (this->list_date[pos]);
+		}else{
+			return ("ERROR");
+		};
+	}
+	void addDate(string date){this->list_date.push_back(date);};
+
 protected:
 	int id;
 	string first_name;
 	string last_name;
+	vector<string> list_date; // accepted forme dd/mm/aaaa
 };
 
 // customer class
@@ -67,35 +80,23 @@ public:
 	chief(int id, string first_name, string last_name, float price);
 	void setPrice(float price){this->price = price;};
 	float getPrice(){return(this->price);};
-	int checkExistence(string date);
-	
-	string getListDateTaken(int pos){
-		if (pos < this->list_date_taken.size()){
-			return (this->list_date_taken[pos]);
-		}else{
-			return ("ERROR");
-		};
-	}
-	bool addDate(string date);
 	
 private:
 	float price;
-	vector<string> list_date_taken; // accepted forme dd/mm/aaaa
-	
 };
 
 // DJ class
 
+class DJ : public person{
+public:
+	DJ(){};
+	~DJ(){};
+	DJ(int id, string first_name, string last_name, float price_evening);
+	float getPrice_evening(){return (this->price_evening);};
+	void setPrice_evening(float price_evening){this->price_evening = price_evening;};
 
-
-
-
-
-
-
-
-
-
-
+private:
+	float price_evening;
+};
 
 #endif

@@ -9,9 +9,9 @@
 
 using namespace std;
 
-bool is_digit(char c) { return !isdigit(c); }
+inline bool is_digit(char c) { return !isdigit(c); }
 
-bool is_number(const string  s)
+inline bool is_number(const string  s)
 {
     return (find_if(s.begin(), s.end(), is_digit) == s.end() );
 }
