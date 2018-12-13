@@ -22,34 +22,9 @@ int person::checkExistence(string date){
 	//	-1 : the input given doesn't respect the form DD/MM/AAAA
 	//	 0 : the date doesn't existe in the table
 
-	int statut = 1; 
+	int statut= 1; 
 
-	// check the size
-	if (date.size() != 10){statut = -1;}
-
-	// check the existence of "/" in the correct position
-	if ((date[2] =! "/") or (date[5] =! "/")){statut = -1;}
-
-	// check the month
-	if(is_number(date.substr(3,2)) == 0){
-		statut = -1;
-	}else{
-		if ((atoi(date.substr(3,2).c_str()) > 12 ) or (atoi(date.substr(3,2).c_str()) == 0 )){
-			statut = -1;
-		}
-	}
-
-	// check the year 
-	if(is_number(date.substr(6,4)) == 0){
-		statut = -1;
-	}
-
-	//check the day
-	if(is_number(date.substr(0,2)) == 0){
-		statut = -1;
-	}else{
-		if ((atoi(date.substr(0,2).c_str())==0) or (atoi(date.substr(0,2).c_str())>31)){statut = -1;}
-	}
+	statut = check_date_from(date);
 
 	// check if existe
 	if (statut == 1){

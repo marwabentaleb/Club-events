@@ -50,7 +50,8 @@ class customer : public person{
 public:
 	customer(){};
 	~customer(){};
-	customer(int id, string first_name, string last_name, string email_customer, string address_custome, string tel_client);
+	customer(int id, string first_name, string last_name, string email_customer,
+		 string address_custome, string tel_client);
 	string getEmail_customer() const { return this->email_customer;}
 	void setEmail_customer(string email_customer){
 		this->email_customer = email_customer;
