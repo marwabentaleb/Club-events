@@ -60,16 +60,29 @@ private:
 
 // Chief class
 
-//class chief : public person{
-//public:
-	//chief(){};
-	//~chief(){};
-	//chief(int id, string first_name, string last_name, vector<string> list_date_taken, float price);
-//private:
-	//float price;
-	//vector<string> list_date_taken;
+class chief : public person{
+public:
+	chief(){};
+	~chief(){};
+	chief(int id, string first_name, string last_name, float price);
+	void setPrice(float price){this->price = price;};
+	float getPrice(){return(this->price);};
+	int checkExistence(string date);
 	
-//}
+	string getListDateTaken(int pos){
+		if (pos < this->list_date_taken.size()){
+			return (this->list_date_taken[pos]);
+		}else{
+			return ("ERROR");
+		};
+	}
+	bool addDate(string date);
+	
+private:
+	float price;
+	vector<string> list_date_taken; // accepted forme dd/mm/aaaa
+	
+};
 
 // DJ class
 

@@ -1,17 +1,21 @@
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <vector>
+#include <algorithm> 
 
 #include "class_person.h"
-
+#include "functions.h"
 
 using namespace std;
 
 int main() 
 {
 	
-	customer customer1(0, "marwa" , "bta","btamarwa@gmail.com","34 Rue victor basch","06 14 89 83 17");
+	chief chief1(0,"marwa","bta",100);
 	
-cout <<"id : " << customer1.getId() << " - nom : "<< customer1.getFirst_name() << " " << customer1.getLast_name() << " email : " << customer1.getEmail_customer() << " adress : " << customer1.getAddress_custome() << " tel : " <<customer1.getTel_client() << endl;
-
+	string text = "12/20";
+	
+	cout << is_number(text.substr(3,2)) << " - " <<atoi(text.c_str())<< endl;
 	return 0;
 }
