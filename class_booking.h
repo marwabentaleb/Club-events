@@ -14,9 +14,12 @@ using namespace std;
 class booking{
 public:
 	booking(){};
-	booking(int id_res, customer* pt_customer, string booking_date, string name_chief,
-		int number_of_guests, string name_DJ, evening_room* pt_evening_room);
-	~booking(){};
+	booking(int id_res, customer customer_tmp, string booking_date, string name_chief,
+		int number_of_guests, string name_DJ, evening_room evening_room_tmp);
+	~booking(){
+		delete pt_customer;
+		delete pt_evening_room;
+	};
 
 	int getId_res(){return(this->id_res);};
 	void setId_res(int id_res){this->id_res = id_res;};

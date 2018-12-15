@@ -1,49 +1,132 @@
 #include <iostream>
-#include <string>
+#include <stdio.h>
+#include <string.h>
 #include <sstream>
 #include <vector>
 #include <algorithm> 
+#include <fstream>
 
 #include "class_booking.h"
 #include "class_person.h"
 #include "functions.h"
 #include "class_evening_room.h"
 
+// A class to read data from a csv file.
+class CSVReader
+{public:
+	const char* fileName;
+	string delimeter;
+
+public:
+	CSVReader(const char* file, string delm= "\t"){
+		fileName = file;
+		delimeter = delm;
+	}
+	vector< vector<string> > getData();
+};
+
+vector< vector<string> > CSVReader::getData(){
+	
+	ifstream file(fileName);
+	string line = "";
+	int n;
+	vector< vector<string> > dataList;
+	while (getline(file, line)){
+		vector<string> vec;
+		n = line.length();
+		char str[n+1];
+		strcpy(str, line.c_str());
+		char * pch;
+	  	pch = strtok (str,"\t ");
+	  	while (pch != NULL){
+			vec.push_back(pch);
+		    	pch = strtok (NULL, "\t");
+  		}
+		dataList.push_back(vec);
+	}
+	// Close the File
+	file.close();
+	return dataList;
+}
+
 using namespace std;
 
 int main() 
 {
-	// Test ....
-	chief chief1(0,"marwa","bta",100);
-	cout << chief1.getId() << " - " << chief1.getFirst_name() << " - " << chief1.getLast_name() << " - " <<chief1.getPrice()<< endl;
-	int existence;
-	existence = chief1.checkExistence("10/01/2018");
+	// List of days ...
+	vector<string> List_of_days;
 
-	if (existence == 0){chief1.addDate("10/01/2018");}
+	// List of clients ...
+	vector<person> List_of_clients;
 
+	// List of rooms ...
+	vector<evening_room> List_of_rooms;
 
-	cout   << chief1.getListDate(0) << endl;
+	// List of Chiefs ...
+	vector<chief> List_of_chiefs;
+
+	// List of DJs ...
+	vector<DJ> List_of_DJs;
+
+	// List of reservations ...
+	vector<booking> List_of_reservations;
+
+	// Initialization of List_of_DJs
+	string data_DJ_price_tmp = "./dataset/DJ_price.csv";
+	const char* data_DJ_price = data_DJ_price_tmp.c_str();
+	
+	CSVReader reader_DJ(data_DJ_price);
+	vector< vector<string> > dataList = reader_DJ.getData();
+	dataList.erase(dataList.begin());
+	
+	for(int i=0; i< dataList.size(); i++){
+		DJ DJ_tmp(i, "first_name_DJ" + dataList[i][0], "last_name_DJ" + dataList[i][0], strtof((dataList[i][1]).c_str(),0));
+		List_of_DJs.push_back(DJ_tmp);
+	}
+
+	// Initialization of List_of_chiefs
+	string data_price_food_unit_tmp = "./dataset/price_food_unit.csv";
+	const char* data_price_food_unit = data_price_food_unit_tmp.c_str();
+	CSVReader reader_Chief(data_price_food_unit);
+	vector< vector<string> > dataList_chief = reader_Chief.getData();
+	dataList_chief.erase(dataList_chief.begin());
+	
+	for(int i=0; i< dataList_chief.size(); i++){
+		chief Chief_tmp(i, "first_name_chief" + dataList_chief[i][0], "last_name_chief" + dataList_chief[i][0], strtof((dataList_chief[i][1]).c_str(),0));
+		List_of_chiefs.push_back(Chief_tmp);
+	}
+	for(int i = 0; i< dataList_chief.size(); i++){
+		cout << List_of_chiefs[i].getFirst_name() << "\t" << List_of_chiefs[i].getLast_name() << "\t" << List_of_chiefs[i].getPrice() << endl;
+	}
+	
+
+	// Initialization of List_of_days
+	string data_daily_price_rental_tmp = "./dataset/daily_price_rental.csv";
+	const char* data_daily_price_rental = data_daily_price_rental_tmp.c_str();
+	CSVReader reader_daily_price_rental(data_daily_price_rental);
+	vector< vector<string> > dataList_daily_price_rental = reader_daily_price_rental.getData();
+	int nb_days = dataList_daily_price_rental[0].size();
+	cout << "days : " << nb_days << endl;
+	// Simulation by day
 	
 	
-	cout << "********** " << endl;
-	evening_room evening_room1(0, "Makram", 200, 2500, "ON", 1500);
+	
+	/*string item;
+	string action;
+	bool stop = false;
+	do{
+	i++;
+	cout << "What do you want to do ? <<add>> or <<remove>>" << endl;
+	cin >> action;
+	cout << "what do you wante to " << action << " ? <<costumer>>, <<evening room>>, <<chief>> or <<DJ>>" << endl;
+	cin >> item;
+	cout << "EVERYTHING IS FINE !!!! " << endl;
+	if (i == 3){stop = true;}
+	}while(stop == false);
+	cout << "i : " << i << endl;*/
 
-	cout << evening_room1.getName() << " - " <<evening_room1.getArea() << " m2"<< " - " <<evening_room1.getCapacity() << " - " << evening_room1.getWifi() 
-	<< " - " << evening_room1.getPrice() << " EUR" << endl;
+	
+	cout << "ALL is FINE" << endl;
 
-	cout << "********** " << endl;
-	customer customer1(0, "first_name", "last_name",
-	 	"email_customer", "address_custome",
-	 	"0614898317");
-	cout << customer1.getTel_client() << endl;
-
-	booking booking1(0, &customer1, "13/12/2018", "samir Sankou7", 2000, "DJ costa", &evening_room1);
-	customer* it = booking1.getPt_customer();
-	evening_room* it1 = booking1.getPt_evening_room();
-	cout << booking1.getId_res() << " - " << booking1.getBooking_date() << " - " << it->getFirst_name()<< " - " << booking1.getName_chief()
-	<< " - " << booking1.getNumber_of_guests() << " - " << booking1.getName_DJ() << " - " << it1->getName()<<endl;
-
-
-	// ....
 	return 0;
 }
