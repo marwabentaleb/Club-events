@@ -57,7 +57,7 @@ int main()
 	vector<string> List_of_days;
 
 	// List of clients ...
-	vector<person> List_of_clients;
+	vector<customer> List_of_clients;
 
 	// List of rooms ...
 	vector<evening_room> List_of_rooms;
@@ -110,10 +110,6 @@ int main()
 	List_of_days = dataList_daily_price_rental[0];
 	List_of_days.erase(List_of_days.begin());
 
-	for(int i =0; i<10; i++){
-		cout << List_of_days[i] << "\t" ;
-	}
-	cout << "\n\ndays : " << nb_days << endl;
 	dataList_daily_price_rental.erase(dataList_daily_price_rental.begin());
 
 	string data_characteristics_evening_room_tmp = "./dataset/characteristics_evening_room.csv";
@@ -131,29 +127,61 @@ int main()
 		List_of_rooms.push_back(room_tmp);
 	}
 	
-	cout<< "\n\nName\tArea\tCapacity\tWifi\tPrice" << endl;
-	for(int i = 0; i< characteristics_evening_room.size(); i++){
-		cout << List_of_rooms[i].getName() << "\t" << List_of_rooms[i].getArea() 
-		<< "\t" << List_of_rooms[i].getCapacity() << "\t\t" << List_of_rooms[i].getWifi()
-		<< "\t" << List_of_rooms[i].getPrice()<< endl;
-	}
 	// Simulation by day
-	
-	
-	
-	/*string item;
+	string item;
 	string action;
+	string day_even;
+	int nb_guests;
+	float maximum_budget;
 	bool stop = false;
-	do{
-	i++;
-	cout << "What do you want to do ? <<add>> or <<remove>>" << endl;
-	cin >> action;
-	cout << "what do you wante to " << action << " ? <<costumer>>, <<evening room>>, <<chief>> or <<DJ>>" << endl;
-	cin >> item;
-	cout << "EVERYTHING IS FINE !!!! " << endl;
-	if (i == 3){stop = true;}
-	}while(stop == false);
-	cout << "i : " << i << endl;*/
+
+	vector<evening_room> available_room;
+	vector<chief> available_chief;
+	vector<DJ> available_DJ;
+	int existence;
+	for(int day=0; day<1; day++){
+		cout << "Day : " << List_of_days[day] << endl;
+		cout << "New demand ? <<Yes>> or <<No>>" << endl;
+		cin >> action;
+		if (action == "Yes"){
+			cout << "For which day ? accepted form is dd/mm/aaa" << endl;
+			cin >> day_even;
+			cout << "Number of guests ? " << endl;
+			cin >> nb_guests;
+			cout << "Your maximum budget ?" << endl;
+			cin >> maximum_budget;
+
+			// Looking for the rooms, chiefs and DJs that are available
+			for (int r = 0; r < List_of_rooms.size(); r++){
+				existence = List_of_rooms[r].checkExistence(day_even);
+				if ((existence == 0) and (List_of_rooms[r].getCapacity() >= nb_guests) 
+					and(List_of_rooms[r].getPrice() < maximum_budget)){
+					available_room.push_back(List_of_rooms[r]);}
+			}
+			
+			for (int r = 0; r < List_of_chiefs.size(); r++){
+				existence = List_of_chiefs[r].checkExistence(day_even);
+				if (existence == 0){
+					available_chief.push_back(List_of_chiefs[r]);
+				}
+			}
+
+			for (int r = 0; r < List_of_DJs.size(); r++){
+				existence = List_of_DJs[r].checkExistence(day_even);
+				if (existence == 0){
+					available_DJ.push_back(List_of_DJs[r]);
+				}
+			}
+			
+			cout << "----------------------------------" << endl;
+			cout << "The available wedding pack are :" << endl;
+			
+			
+			cout << "----------------------------------" << endl;
+			
+
+		}
+	}
 	
 	return 0;
 }
