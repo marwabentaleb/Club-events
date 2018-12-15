@@ -80,7 +80,9 @@ int main()
 	dataList.erase(dataList.begin());
 	
 	for(int i=0; i< dataList.size(); i++){
-		DJ DJ_tmp(i, "first_name_DJ" + dataList[i][0], "last_name_DJ" + dataList[i][0], strtof((dataList[i][1]).c_str(),0));
+		DJ DJ_tmp(i, "first_name_DJ" + dataList[i][0],
+			 "last_name_DJ" + dataList[i][0],
+			 strtof((dataList[i][1]).c_str(),0));
 		List_of_DJs.push_back(DJ_tmp);
 	}
 
@@ -92,21 +94,49 @@ int main()
 	dataList_chief.erase(dataList_chief.begin());
 	
 	for(int i=0; i< dataList_chief.size(); i++){
-		chief Chief_tmp(i, "first_name_chief" + dataList_chief[i][0], "last_name_chief" + dataList_chief[i][0], strtof((dataList_chief[i][1]).c_str(),0));
+		chief Chief_tmp(i, "first_name_chief" + dataList_chief[i][0],
+				"last_name_chief" + dataList_chief[i][0],
+				 strtof((dataList_chief[i][1]).c_str(),0));
 		List_of_chiefs.push_back(Chief_tmp);
 	}
-	for(int i = 0; i< dataList_chief.size(); i++){
-		cout << List_of_chiefs[i].getFirst_name() << "\t" << List_of_chiefs[i].getLast_name() << "\t" << List_of_chiefs[i].getPrice() << endl;
-	}
-	
 
-	// Initialization of List_of_days
+	// Initialization of List_of_rooms
 	string data_daily_price_rental_tmp = "./dataset/daily_price_rental.csv";
 	const char* data_daily_price_rental = data_daily_price_rental_tmp.c_str();
 	CSVReader reader_daily_price_rental(data_daily_price_rental);
 	vector< vector<string> > dataList_daily_price_rental = reader_daily_price_rental.getData();
 	int nb_days = dataList_daily_price_rental[0].size();
-	cout << "days : " << nb_days << endl;
+
+	List_of_days = dataList_daily_price_rental[0];
+	List_of_days.erase(List_of_days.begin());
+
+	for(int i =0; i<10; i++){
+		cout << List_of_days[i] << "\t" ;
+	}
+	cout << "\n\ndays : " << nb_days << endl;
+	dataList_daily_price_rental.erase(dataList_daily_price_rental.begin());
+
+	string data_characteristics_evening_room_tmp = "./dataset/characteristics_evening_room.csv";
+	const char* data_characteristics_evening_room = data_characteristics_evening_room_tmp.c_str();
+	CSVReader reader_characteristics_evening_room(data_characteristics_evening_room);
+	vector< vector<string> > characteristics_evening_room = reader_characteristics_evening_room.getData();
+	characteristics_evening_room.erase(characteristics_evening_room.begin());
+
+	for( int i = 0; i< characteristics_evening_room.size(); i++){
+		evening_room room_tmp(i, "room" + characteristics_evening_room[i][0],
+					atoi( characteristics_evening_room[i][2].c_str() ), 
+					atoi( characteristics_evening_room[i][1].c_str() ),
+					characteristics_evening_room[i][3],
+					strtof((dataList_daily_price_rental[i][1]).c_str(),0));
+		List_of_rooms.push_back(room_tmp);
+	}
+	
+	cout<< "\n\nName\tArea\tCapacity\tWifi\tPrice" << endl;
+	for(int i = 0; i< characteristics_evening_room.size(); i++){
+		cout << List_of_rooms[i].getName() << "\t" << List_of_rooms[i].getArea() 
+		<< "\t" << List_of_rooms[i].getCapacity() << "\t\t" << List_of_rooms[i].getWifi()
+		<< "\t" << List_of_rooms[i].getPrice()<< endl;
+	}
 	// Simulation by day
 	
 	
@@ -124,9 +154,6 @@ int main()
 	if (i == 3){stop = true;}
 	}while(stop == false);
 	cout << "i : " << i << endl;*/
-
 	
-	cout << "ALL is FINE" << endl;
-
 	return 0;
 }
